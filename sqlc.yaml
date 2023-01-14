@@ -1,0 +1,17 @@
+version: "1"
+packages:
+  - name: "login_queries" 
+    path: "./Database/sqlc"
+    queries: "./Database/query/"
+    schema: "./Database/migration/"
+    engine: "postgresql"
+    emit_json_tags: true
+    emit_prepared_queries: false
+    emit_interface: false
+    emit_exact_table_names: false
+
+
+# Name- Package Name
+# Path- Store the generated golang code
+# Queries- Where to look for the query file
+# Schema- contains database migration
