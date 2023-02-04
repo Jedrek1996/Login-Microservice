@@ -2,7 +2,7 @@
 // versions:
 //   sqlc v1.16.0
 
-package login_queries
+package db
 
 import (
 	"database/sql"

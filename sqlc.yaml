@@ -1,6 +1,6 @@
 version: "1"
 packages:
-  - name: "login_queries" 
+  - name: "db" 
     path: "./Database/sqlc"
     queries: "./Database/query/"
     schema: "./Database/migration/"

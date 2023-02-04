@@ -8,7 +8,7 @@ postal_code
     $1, $2, $3, $4
 ) RETURNING *;
 
--- name: CreateU2ser :one
+-- name: CreateUser :one
 INSERT INTO user_details (
 first_name,
 last_name,

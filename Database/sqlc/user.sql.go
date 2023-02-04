@@ -3,7 +3,7 @@
 //   sqlc v1.16.0
 // source: user.sql
 
-package login_queries
+package db
 
 import (
 	"context"
@@ -45,7 +45,7 @@ func (q *Queries) CreateAddress(ctx context.Context, arg CreateAddressParams) (A
 	return i, err
 }
 
-const createU2ser = `-- name: CreateU2ser :one
+const createUser = `-- name: CreateUser :one
 INSERT INTO user_details (
 first_name,
 last_name,
@@ -57,7 +57,7 @@ mobile
 ) RETURNING id, first_name, last_name, user_name, email, mobile
 `
 
-type CreateU2serParams struct {
+type CreateUserParams struct {
 	FirstName string `json:"first_name"`
 	LastName  string `json:"last_name"`
 	UserName  string `json:"user_name"`
@@ -65,8 +65,8 @@ type CreateU2serParams struct {
 	Mobile    int32  `json:"mobile"`
 }
 
-func (q *Queries) CreateU2ser(ctx context.Context, arg CreateU2serParams) (UserDetail, error) {
-	row := q.db.QueryRowContext(ctx, createU2ser,
+func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (UserDetail, error) {
+	row := q.db.QueryRowContext(ctx, createUser,
 		arg.FirstName,
 		arg.LastName,
 		arg.UserName,
