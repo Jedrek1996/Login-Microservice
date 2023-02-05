@@ -1,9 +1,9 @@
-package main
+package db
 
 import (
+	"Microservice-Login/util"
 	"database/sql"
 	"fmt"
-	"net/http"
 
 	_ "github.com/lib/pq"
 )
@@ -18,6 +18,8 @@ import (
 //Sqlc to generate query codes
 
 //check if connected
+
+var testQueries *Queries
 
 const (
 	host     = "localhost"
@@ -38,13 +40,19 @@ func init() {
 }
 
 func main() {
-	http.ListenAndServe(":8000", nil) //Start port on 8080
+	//http.ListenAndServe(":8000", nil) //Start port on 8080
 
 	// http.HandleFunc("/", MainPageFunc())
 
 	fmt.Println("Login Page")
 
-	dbConnection()
+	fmt.Println(util.RandomFirstNameGenerator())
+	fmt.Println(util.RandomLastNameGenerator())
+	fmt.Println(util.RandomEmailGenerator())
+	fmt.Println(util.RandomMobileGenerator())
+	fmt.Println(util.RandomUsernameGenerator())
+
+	//dbConnection()
 }
 
 func CheckError(err error) {
