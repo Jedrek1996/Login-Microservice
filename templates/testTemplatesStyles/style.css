@@ -1,0 +1,211 @@
+
+/*Login Page*/
+.centerDiv {
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 67%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#loginText{
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 7rem;
+    text-align: center;
+    color: #679b9d;
+}
+
+.mainHeaderMsg{
+  font-family: 'Roboto', sans-serif;
+  font-size: 1.5rem;
+  margin: 0.7rem 0 1rem 0rem;
+  display: block;
+  color: #4ecbcf;
+  text-align: center;
+  font-size: 3rem;
+}
+
+.mainMsg{
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.05rem;
+    margin: 0rem 10rem 1rem 1.5rem;
+    display: block;
+    transition: all 0.3s;
+    transform: translateY(0rem);
+    color: #b5aeaec9;
+}
+
+.loginTextMsgWrong{
+    color:#c76363c9 !important
+}
+
+.mainLabel {
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.5rem;
+    margin: 0.7rem 0 1rem 1.5rem;
+    display: block;
+    transition: all 0.3s;
+    transform: translateY(0rem);
+    color: #4ecbcf;
+}
+  
+  .mainInput {
+    font-family: 'Roboto', sans-serif;
+    color: #333;
+    font-size: 1.5rem;
+    margin: 0 auto;
+    padding: 1.2rem 2rem;
+    border-radius: 1.2rem;
+    background-color: rgb(255, 255, 255);
+    border-color:#f9957d59;
+    width: 90%;
+    display: block;
+    transition: all 0.5s;
+  }
+  
+  .mainInput:placeholder-shown + .form__label {
+    opacity: 0;
+    visibility: hidden;
+    -webkit-transform: translateY(-4rem);
+    transform: translateY(-4rem);
+  }
+  
+  .buttonStyle  {
+    position: relative;
+    display: block;
+    width: 10rem;
+    height: 3rem;
+    border-radius: 18px;
+    background-color: #2bd5db9c;
+    border: solid 1px transparent;
+    color: white;
+    font-size: 1.5rem;
+    font-weight: 300;
+    left: 31%;
+    cursor: pointer;
+    transition: all .6s ease-in-out;
+  }
+    
+ .buttonStyle:hover {
+      background-color: #4ecbcf;
+      border-color: #fff;
+      transition: all .3s ease-in-out;
+  } 
+
+  .mainLink{
+    position: fixed;
+    bottom: -10%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: #679b9d;
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.5rem;
+    text-decoration: underline;
+    text-decoration-style: solid;
+    text-decoration-thickness: from-font;
+    transition: all .5s ease-in-out;
+  }
+
+  .mainLink:hover{
+    transition: all .5s ease-in-out;
+    color: #2bd5db9c;
+    font-size: 1.65rem;
+  }
+
+  /*Table Style*/
+
+  .actionMainHeader{
+    text-align: center;
+    margin: 3rem 0;
+    font-size: 3.5rem;
+    font-weight: 500;
+    text-decoration: underline;
+    color: slategray;
+  }
+
+  table, th, td {
+    border:1px solid #5cbccb;
+    height: 50px;
+    font-size: 1.5rem;
+    color:teal;
+  }
+
+  table{
+    margin: 0 1rem;
+  }
+
+  .tableHeader{
+    margin: 2rem 1rem;
+    color: #a77777;
+    text-decoration: underline;
+  }
+
+  .actionHeader{
+    margin: 2rem 1rem 0.5rem 1rem;
+    color: #5787dd;
+    text-decoration: underline;
+  }
+
+  .actionDiv{
+    margin: 2rem 1rem;
+  }
+
+  .actionLabel{
+    font-size: 1.6rem;
+    color: #000000b3;
+    margin-left: 1rem;
+  }
+
+  .actionInputText{
+    margin: 0 0 0 1rem;
+  }
+
+  .actionButton{
+    display: block;
+    width: 6rem;
+    height: 2rem;
+    border-radius: 18px;
+    background-color: #db792b69;
+    border: solid 1px transparent;
+    color: white;
+    font-size: 1.3rem;
+    font-weight: 300;
+    margin: 1rem 0 1rem 1rem;
+    cursor: pointer;
+    transition: all .6s ease-in-out;
+  }
+
+  .actionButton:hover{
+    transition: all .5s ease-in-out;
+    color: #e76d0aaf;
+    font-size: 1.65rem;
+  }
+
+  .actionLinkText{
+    margin: 0.5rem 1rem 0.5rem 1rem;
+    color: #0abfa6d0;
+    text-decoration: underline;
+  }
+
+  .actionLink{
+    margin: 1rem;
+    font-size: 1.5rem;
+    font-family: 'Roboto', sans-serif;
+    text-decoration: underline;
+    text-decoration-style: solid;
+    text-decoration-thickness: from-font;
+    transition: all .5s ease-in-out;
+    color: #0e0b0bb3;
+  }
+
+  .mainLink:hover{
+    transition: all .5s ease-in-out;
+    color: #36261db3;
+    font-size: 1.65rem;
+  }
