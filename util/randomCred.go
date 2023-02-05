@@ -51,11 +51,10 @@ func removePart(str string) string {
 }
 
 // Converts string to int64 to int 32 ---✨
-func convertToInt32(s string) (int32Val int32) {
+func convertToInt32(s string) int32 {
 	i, err := strconv.ParseInt(s, 10, 64)
 	if err != nil {
 		panic(err)
 	}
-	int32Val = int32(i)
-	return
+	return int32(i)
 }
