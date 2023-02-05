@@ -13,4 +13,7 @@ migrateup:
 migratedown:
 	migrate -path database/migration -database "postgresql://root:secret@localhost:5432/FoodPanda9?sslmode=disable" -verbose down
 
-.PHONY: createdb dropdb postgres migratedown migrateup
+test:
+	go test -v -cover ./...
+
+.PHONY: createdb dropdb postgres migratedown migrateup test
