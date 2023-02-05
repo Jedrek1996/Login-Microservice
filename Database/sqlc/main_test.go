@@ -1,9 +1,11 @@
 package db
 
 import (
-	"Microservice-Login/util"
 	"database/sql"
 	"fmt"
+	"log"
+	"os"
+	"testing"
 
 	_ "github.com/lib/pq"
 )
@@ -20,6 +22,7 @@ import (
 //check if connected
 
 var testQueries *Queries
+var testDB *sql.DB
 
 const (
 	host     = "localhost"
@@ -27,6 +30,8 @@ const (
 	user     = "postgres"
 	password = "1234"
 	dbname   = "first_db"
+	dbDriver = "postgres"
+	dbSource = "postgresql://root:secret@localhost:5430/FoodPanda9?sslmode=disable"
 )
 
 type userCreds struct {
@@ -39,18 +44,24 @@ func init() {
 	//tpl = template.Must(template.ParseGlob("./TestTemplates/*"))
 }
 
-func main() {
+func TestMain(m *testing.M) {
 	//http.ListenAndServe(":8000", nil) //Start port on 8080
 
 	// http.HandleFunc("/", MainPageFunc())
 
-	fmt.Println("Login Page")
+	var err error
 
-	fmt.Println(util.RandomFirstNameGenerator())
-	fmt.Println(util.RandomLastNameGenerator())
-	fmt.Println(util.RandomEmailGenerator())
-	fmt.Println(util.RandomMobileGenerator())
-	fmt.Println(util.RandomUsernameGenerator())
+	testDB, err = sql.Open(dbDriver, dbSource)
+
+	if err != nil {
+		log.Fatal("Error connecting to db:", err)
+	}
+
+	testQueries = New(testDB)
+
+	os.Exit(m.Run())
+
+	fmt.Println(testQueries)
 
 	//dbConnection()
 }
