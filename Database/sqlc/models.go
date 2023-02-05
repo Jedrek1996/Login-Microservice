@@ -6,6 +6,7 @@ package db
 
 import (
 	"database/sql"
+	"time"
 )
 
 type Address struct {
@@ -23,10 +24,11 @@ type CustomerAddress struct {
 }
 
 type UserDetail struct {
-	ID        int32  `json:"id"`
-	FirstName string `json:"first_name"`
-	LastName  string `json:"last_name"`
-	UserName  string `json:"user_name"`
-	Email     string `json:"email"`
-	Mobile    int32  `json:"mobile"`
+	ID        int32     `json:"id"`
+	FirstName string    `json:"first_name"`
+	LastName  string    `json:"last_name"`
+	UserName  string    `json:"user_name"`
+	Email     string    `json:"email"`
+	Mobile    int32     `json:"mobile"`
+	CreatedAt time.Time `json:"created_at"`
 }

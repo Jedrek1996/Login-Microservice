@@ -54,7 +54,7 @@ email,
 mobile
 ) VALUES(
     $1, $2, $3, $4, $5
-) RETURNING id, first_name, last_name, user_name, email, mobile
+) RETURNING id, first_name, last_name, user_name, email, mobile, created_at
 `
 
 type CreateUserParams struct {
@@ -81,6 +81,7 @@ func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (UserDet
 		&i.UserName,
 		&i.Email,
 		&i.Mobile,
+		&i.CreatedAt,
 	)
 	return i, err
 }
