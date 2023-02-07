@@ -10,11 +10,15 @@ import (
 var tpl *template.Template
 
 func init() {
-	tpl = template.Must(template.ParseGlob("./testTemplates/*"))
+	tpl = template.Must(template.ParseGlob("./templates/testTemplates/*"))
 }
 
 func main() {
-	http.HandleFunc("/login", loginFunc)
+	//CSS Files for testing
+	fs := http.FileServer(http.Dir("./templates"))
+	http.Handle("/templates/", http.StripPrefix("/templates/", fs))
+
+	http.HandleFunc("/", loginTest)
 	// http.HandleFunc("/welcome", cookies.Welcome)
 	// http.HandleFunc("/welcome", cookies.Refresh)
 	// http.HandleFunc("/welcome", cookies.Logout)
@@ -23,9 +27,8 @@ func main() {
 
 }
 
-func loginFunc(res http.ResponseWriter, req *http.Request) {
+func loginTest(res http.ResponseWriter, req *http.Request) {
 	//Login Template
-	fmt.Println(tpl)
 	if req.Method == "GET" {
 		fmt.Println("Loggin test")
 
@@ -34,13 +37,12 @@ func loginFunc(res http.ResponseWriter, req *http.Request) {
 		if err != nil {
 			log.Fatalln(err)
 		}
+	} else if req.Method == "POST" {
+		userName := req.FormValue("loginUsername")
+		userPassword := req.FormValue("loginPassword")
 
-		// err := userLoggedInTpl.ExecuteTemplate(res, "MainUserPage.gohtml", &appointmentsData)
-		// checkLoggedIn(res, req, currentUser)
+		fmt.Println(userName)
+		fmt.Println(userPassword)
 
-		// if err != nil {
-		// 	log.Fatalln(err)
-		// 	return
-		// }
 	}
 }
