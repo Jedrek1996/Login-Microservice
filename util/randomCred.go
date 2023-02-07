@@ -23,6 +23,11 @@ func RandomUsernameGenerator() (username string) {
 	return
 }
 
+func RandomPasswordGenerator() (password string) {
+	password = gofakeit.Password(true, true, true, true, false, 10)
+	return
+}
+
 func RandomEmailGenerator() (email string) {
 	email = gofakeit.Email()
 	return
