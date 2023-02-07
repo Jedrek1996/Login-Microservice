@@ -3,6 +3,7 @@ CREATE TABLE "user_details" (
   "first_name" text NOT NULL,
   "last_name" text NOT NULL,
   "user_name" varchar NOT NULL,
+  "user_password" varchar NOT NULL,
   "email" varchar NOT NULL,
   "mobile" int NOT NULL,
   "created_at" timestamptz NOT NULL DEFAULT (now())

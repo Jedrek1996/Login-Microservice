@@ -24,11 +24,12 @@ type CustomerAddress struct {
 }
 
 type UserDetail struct {
-	ID        int32     `json:"id"`
-	FirstName string    `json:"first_name"`
-	LastName  string    `json:"last_name"`
-	UserName  string    `json:"user_name"`
-	Email     string    `json:"email"`
-	Mobile    int32     `json:"mobile"`
-	CreatedAt time.Time `json:"created_at"`
+	ID           int32     `json:"id"`
+	FirstName    string    `json:"first_name"`
+	LastName     string    `json:"last_name"`
+	UserName     string    `json:"user_name"`
+	UserPassword string    `json:"user_password"`
+	Email        string    `json:"email"`
+	Mobile       int32     `json:"mobile"`
+	CreatedAt    time.Time `json:"created_at"`
 }

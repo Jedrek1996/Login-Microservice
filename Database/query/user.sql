@@ -13,8 +13,9 @@ INSERT INTO user_details (
 first_name,
 last_name,
 user_name,
+user_password,
 email,
 mobile
 ) VALUES(
-    $1, $2, $3, $4, $5
+    $1, $2, $3, $4, $5, $6
 ) RETURNING *;

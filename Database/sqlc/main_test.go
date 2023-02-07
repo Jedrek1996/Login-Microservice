@@ -10,17 +10,6 @@ import (
 	_ "github.com/lib/pq"
 )
 
-//If login connect to database
-//Authenticsation - https://www.sohamkamani.com/golang/password-authentication-and-storage/
-//Constant check for session cookies
-
-//Circuit breaker - https://levelup.gitconnected.com/circuit-breaker-example-in-golang-e6459c87eaeb
-
-//Seperate database connection? Queries seperate
-//Sqlc to generate query codes
-
-//check if connected
-
 var testQueries *Queries
 var testDB *sql.DB
 

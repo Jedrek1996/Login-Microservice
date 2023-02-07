@@ -50,19 +50,21 @@ INSERT INTO user_details (
 first_name,
 last_name,
 user_name,
+user_password,
 email,
 mobile
 ) VALUES(
-    $1, $2, $3, $4, $5
-) RETURNING id, first_name, last_name, user_name, email, mobile, created_at
+    $1, $2, $3, $4, $5, $6
+) RETURNING id, first_name, last_name, user_name, user_password, email, mobile, created_at
 `
 
 type CreateUserParams struct {
-	FirstName string `json:"first_name"`
-	LastName  string `json:"last_name"`
-	UserName  string `json:"user_name"`
-	Email     string `json:"email"`
-	Mobile    int32  `json:"mobile"`
+	FirstName    string `json:"first_name"`
+	LastName     string `json:"last_name"`
+	UserName     string `json:"user_name"`
+	UserPassword string `json:"user_password"`
+	Email        string `json:"email"`
+	Mobile       int32  `json:"mobile"`
 }
 
 func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (UserDetail, error) {
@@ -70,6 +72,7 @@ func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (UserDet
 		arg.FirstName,
 		arg.LastName,
 		arg.UserName,
+		arg.UserPassword,
 		arg.Email,
 		arg.Mobile,
 	)
@@ -79,6 +82,7 @@ func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (UserDet
 		&i.FirstName,
 		&i.LastName,
 		&i.UserName,
+		&i.UserPassword,
 		&i.Email,
 		&i.Mobile,
 		&i.CreatedAt,
