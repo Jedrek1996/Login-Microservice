@@ -46,3 +46,26 @@ func loginTest(res http.ResponseWriter, req *http.Request) {
 
 	}
 }
+
+func signUpTest(res http.ResponseWriter, req *http.Request) {
+	//Login Template
+	if req.Method == "GET" {
+		fmt.Println("Signup test")
+
+		err := tpl.ExecuteTemplate(res, "Login.gohtml", "")
+
+		if err != nil {
+			log.Fatalln(err)
+		}
+	} else if req.Method == "POST" {
+		userName := req.FormValue("loginUsername")
+		userPassword := req.FormValue("loginPassword")
+
+		fmt.Println(userName)
+		fmt.Println(userPassword)
+
+	}
+}
+
+//Create queries for login/ logout user
+//
