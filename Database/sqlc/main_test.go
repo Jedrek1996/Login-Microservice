@@ -29,14 +29,10 @@ type userCreds struct {
 }
 
 func init() {
-	//Test template for checking login
-	//tpl = template.Must(template.ParseGlob("./TestTemplates/*"))
+
 }
 
 func TestMain(m *testing.M) {
-	//http.ListenAndServe(":8000", nil) //Start port on 8080
-
-	// http.HandleFunc("/", MainPageFunc())
 
 	var err error
 
@@ -85,17 +81,3 @@ func dbConnection() {
 
 	CheckError(insertErr)
 }
-
-// func checkUserDatabase
-
-// func MainPageFunc(res http.ResponseWriter, req *http.Request) {
-
-// 	if req.Method == "GET" {
-// 		err := tpl.ExecuteTemplate(res, "MainLoginPage.gohtml")
-
-// 		if err != nil {
-// 			log.Fatalln(err)
-// 		}
-// 	} else if req.Method == "POST" {
-// 	}
-// }
