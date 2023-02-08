@@ -18,6 +18,8 @@ Constant check for session cookies
 
 4. Data dog?
 
+5 Graphql
+
 ---------- Guidelines for endpoints ---------- 😎
 1. Define clear and descriptive routes: Your routes should be clear and descriptive, making it easy for clients to understand how to call the endpoint. Use meaningful URL paths and HTTP methods (e.g. GET, POST, PUT, etc.).
 
