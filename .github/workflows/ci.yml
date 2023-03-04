@@ -45,7 +45,9 @@ jobs:
           which migrate
       
       - name: Run migrations
-        run: make migrateup
+        run: |
+          cd database/migration
+          migrate -path . -database "postgresql://root:secret@localhost:5430/FoodPanda9?sslmode=disable" -verbose up
 
       - name: Run tests
         run: make test
