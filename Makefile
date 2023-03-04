@@ -19,4 +19,12 @@ test:
 sqlc:
 	sqlc generate
 
-.PHONY: createdb dropdb postgres migratedown migrateup test
+#Build docker image
+build:
+	docker build -t login9 .
+
+#Run docker image
+run: 
+	docker run -p 8080:8080 login9
+
+.PHONY: createdb dropdb postgres migratedown migrateup test build run
