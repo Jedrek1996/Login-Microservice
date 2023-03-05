@@ -67,3 +67,17 @@ Sample input
   "email": "johndoe@example.com",
   "mobile": 1234567890
 }
+
+
+# IF SQLC GO GET DOES NOT WORK #
+You can manually download the sqlc binary for Windows by following these steps:
+
+Go to the sqlc GitHub releases page: https://github.com/kyleconroy/sqlc/releases.
+
+Scroll down to the "Assets" section and find the release that matches your system architecture and desired version. For example, if you are using Windows and want version 1.11.0, you would download the file sqlc_1.11.0_windows_amd64.zip.
+
+Click on the link for the binary you want to download to start the download.
+
+Once the download is complete, extract the binary from the downloaded ZIP file.
+
+Move the sqlc.exe binary to your Go bin directory, which is typically located at %USERPROFILE%\go\bin.
