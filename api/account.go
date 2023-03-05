@@ -20,7 +20,7 @@ func (server *Server) createUser(ctx *gin.Context) {
 	var req CreateUserRequest
 
 	if err := ctx.ShouldBindJSON(&req); err != nil {
-		ctx.JSON(http.StatusBadRequest, errorResponse(err))
+		ctx.JSON(http.StatusBadRequest, ErrorResponse(err))
 		return
 	}
 
@@ -35,7 +35,7 @@ func (server *Server) createUser(ctx *gin.Context) {
 
 	account, err := server.store.CreateUser(ctx, arg)
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, errorResponse(err))
+		ctx.JSON(http.StatusBadRequest, ErrorResponse(err))
 		return
 	}
 

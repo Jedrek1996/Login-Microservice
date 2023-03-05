@@ -8,10 +8,12 @@ import (
 	"log"
 	"net/http"
 
+	"Microservice-Login/api"
 	db "Microservice-Login/database/sqlc"
 	util "Microservice-Login/util"
 
 	_ "github.com/lib/pq"
+
 )
 
 var tpl *template.Template
@@ -19,8 +21,9 @@ var queries *db.Queries
 var newDB *sql.DB
 
 const (
-	dbDriver = "postgres"
-	dbSource = "postgresql://root:secret@localhost:5430/FoodPanda9?sslmode=disable"
+	dbDriver      = "postgres"
+	dbSource      = "postgresql://root:secret@localhost:5430/FoodPanda9?sslmode=disable"
+	serverAddress = "0.0.0.0:8080"
 )
 
 func init() {
@@ -31,6 +34,14 @@ func init() {
 
 	if err != nil {
 		log.Fatal("Error connecting to db:", err)
+	}
+
+	store := db.NewStore(newDB)
+	server := api.NewServer(store)
+
+	err = server.Start(serverAddress)
+	if err != nil {
+		log.Fatal("Error connecting to server:", server)
 	}
 
 	db.New(newDB)
