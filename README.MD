@@ -39,7 +39,8 @@ Constant check for session cookies
 
 
 -- How to run this service? -- 
- 
+ After cloning this repo
+
 1. Start up docker desktop
 
 2. In this project CLI use the followind make commands in order:
@@ -48,6 +49,7 @@ Constant check for session cookies
 - make migrateup (make the database based on the schema in migration file)
 - make build (to build this project image)
 - make run (to run this project image)
+- go run cmd/main.go
 
 3. Testing for endpoint on postman
 Eg. http://localhost:8080/test1 (Create user)

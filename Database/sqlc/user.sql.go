@@ -9,6 +9,24 @@ import (
 	"context"
 )
 
+const checkUserCredentials = `-- name: CheckUserCredentials :one
+SELECT EXISTS (
+    SELECT 1 FROM user_details WHERE user_name = $1 AND user_password = $2
+)
+`
+
+type CheckUserCredentialsParams struct {
+	UserName     string `json:"user_name"`
+	UserPassword string `json:"user_password"`
+}
+
+func (q *Queries) CheckUserCredentials(ctx context.Context, arg CheckUserCredentialsParams) (bool, error) {
+	row := q.db.QueryRowContext(ctx, checkUserCredentials, arg.UserName, arg.UserPassword)
+	var exists bool
+	err := row.Scan(&exists)
+	return exists, err
+}
+
 const createAddress = `-- name: CreateAddress :one
 INSERT INTO address (
 unit_number,
