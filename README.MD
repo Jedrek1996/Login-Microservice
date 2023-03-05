@@ -36,3 +36,34 @@ Constant check for session cookies
 7. Test the endpoint: Test the endpoint thoroughly to make sure it works as expected and can handle different types of requests and responses.
 
 8. Monitor and maintain the endpoint: Regularly monitor the endpoint to ensure it is performing well and quickly address any issues that arise. Keep the endpoint up-to-date with the latest security patches and upgrades.
+
+
+-- How to run this service? -- 
+ 
+1. Start up docker desktop
+
+2. In this project CLI use the followind make commands in order:
+- make postgres (make postgres container for db connection)
+- make createdb (make the database)
+- make migrateup (make the database based on the schema in migration file)
+- make build (to build this project image)
+- make run (to run this project image)
+
+3. Testing for endpoint on postman
+Eg. http://localhost:8080/test1 (Create user)
+
+Copy the URL and paste.
+Select POST
+Select BODY, Raw > JSON in blue dropdown
+
+Copy and paste into editor
+Sample input
+
+{
+  "first_name": "John",
+  "last_name": "Doe",
+  "user_name": "johndoe",
+  "user_password": "password123",
+  "email": "johndoe@example.com",
+  "mobile": 1234567890
+}
