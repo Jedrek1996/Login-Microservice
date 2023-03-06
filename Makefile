@@ -27,4 +27,8 @@ build:
 run: 
 	docker run -p 8080:8080 login9
 
-.PHONY: createdb dropdb postgres migratedown migrateup test build run
+##START SERVICE##
+start:
+	go run cmd/main.go 
+
+.PHONY: createdb dropdb postgres migratedown migrateup test build run start
