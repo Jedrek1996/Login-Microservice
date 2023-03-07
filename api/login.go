@@ -2,6 +2,7 @@ package api
 
 import (
 	db "Microservice-Login/database/sqlc"
+	"Microservice-Login/util"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -18,6 +19,20 @@ func (server *Server) userLogin(ctx *gin.Context) {
 
 	if err := ctx.ShouldBindJSON(&userReq); err != nil {
 		ctx.JSON(http.StatusBadRequest, ErrorResponse(err))
+		return
+	}
+
+	//To ensure username/password has >8 characters (returns bool)
+	validatedUserName := util.ValidateUsername(userReq.UserName)
+	validatedPassword := util.ValidatePassword(userReq.UserPassword)
+
+	if !validatedUserName {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid username format"})
+		return
+	}
+
+	if !validatedPassword {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid password format"})
 		return
 	}
 

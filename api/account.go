@@ -2,6 +2,8 @@ package api
 
 import (
 	db "Microservice-Login/database/sqlc"
+	"Microservice-Login/util"
+	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -24,21 +26,35 @@ func (server *Server) createUser(ctx *gin.Context) {
 		return
 	}
 
-	arg := db.CreateUserParams{
-		FirstName:    req.FirstName,
-		LastName:     req.LastName,
-		UserName:     req.UserName,
-		UserPassword: req.UserPassword,
-		Email:        req.Email,
-		Mobile:       req.Mobile,
-	}
+	validatedPassword := util.ValidatePassword(req.UserPassword) //To ensure password has >8 characters (returns bool)
 
-	account, err := server.store.CreateUser(ctx, arg)
-	if err != nil {
-		ctx.JSON(http.StatusBadRequest, ErrorResponse(err))
+	if validatedPassword {
+		hashedPassword, err := util.HashString(req.UserPassword)
+
+		if err != nil {
+			log.Fatalln(err)
+			return
+		}
+
+		arg := db.CreateUserParams{
+			FirstName:    req.FirstName,
+			LastName:     req.LastName,
+			UserName:     req.UserName,
+			UserPassword: hashedPassword,
+			Email:        req.Email,
+			Mobile:       req.Mobile,
+		}
+
+		account, err := server.store.CreateUser(ctx, arg)
+		if err != nil {
+			ctx.JSON(http.StatusBadRequest, ErrorResponse(err))
+			return
+		}
+
+		ctx.JSON(http.StatusOK, account)
+
+	} else {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid username format"}) // Not >8 characters
 		return
 	}
-
-	ctx.JSON(http.StatusOK, account)
-
 }
