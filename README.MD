@@ -29,7 +29,8 @@
 - make start (to run service)
 
 ❗️ If container not running 
-- docker start <container id>
+- docker ps -a (Returns all container)
+- docker start (Container ID)
 
 
 -- Testing API Endpoints -- 
@@ -58,7 +59,7 @@ Endpoint - http://localhost:8080/userLogin (User Login)
 Sample input
 {
   "user_name": "johndoe",
-  "user_password": "password123",
+  "user_password": "password123"
 }
 
 ---------- Guidelines for endpoints ---------- 😎
@@ -78,35 +79,3 @@ Sample input
 
 8. Monitor and maintain the endpoint: Regularly monitor the endpoint to ensure it is performing well and quickly address any issues that arise. Keep the endpoint up-to-date with the latest security patches and upgrades.
 
-
--- How to run this service? -- 
- 
-1. Start up docker desktop
-
-2. In this project CLI use the followind make commands in order:
-- make postgres (make postgres container for db connection)
-- make createdb (make the database)
-- make migrateup (make the database based on the schema in migration file)
-- make build (to build this project image)
-- make run (to run this project image)
-
-3. Testing for endpoint on postman
-Eg. http://localhost:8080/test1 (Create user)
-
-Copy the URL and paste.
-Select POST
-Select BODY, Raw > JSON in blue dropdown
-
-Copy and paste into editor
-Sample input
-
-{
-  "first_name": "John",
-  "last_name": "Doe",
-  "user_name": "johndoe",
-  "user_password": "password123",
-  "email": "johndoe@example.com",
-  "mobile": 1234567890
-}
-
-Move the sqlc.exe binary to your Go bin directory, which is typically located at %USERPROFILE%\go\bin.
