@@ -8,7 +8,7 @@ dropdb:
 	docker exec -it postgres12 dropdb FoodPanda9
 
 migrateup: 
-	migrate -path $(PWD)/database/migration -database "postgresql://root:secret@localhost:5430/FoodPanda9?sslmode=disable" -verbose up
+	migrate -path $(PWD)/database/migration/20230114115705_dir.down.sql -database "postgresql://root:secret@localhost:5430/FoodPanda9?sslmode=disable" -verbose up
 
 migratedown:
 	migrate -path $(PWD)/database/migration -database "postgresql://root:secret@localhost:5430/FoodPanda9?sslmode=disable" -verbose down
