@@ -1,7 +1,6 @@
 package api
 
 import (
-	db "Microservice-Login/database/sqlc"
 	"Microservice-Login/util"
 	"fmt"
 	"net/http"
@@ -37,12 +36,8 @@ func (server *Server) userLogin(ctx *gin.Context) {
 		return
 	}
 
-	arg := db.CheckUserCredentialsParams{
-		UserName: userReq.UserName,
-	}
-
 	//Retrives the credential if does not exist, returns error
-	userCred, err := server.store.CheckUserCredentials(ctx, arg)
+	userCred, err := server.store.GetUserByUsername(ctx, userReq.UserName)
 
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, ErrorResponse(err))
