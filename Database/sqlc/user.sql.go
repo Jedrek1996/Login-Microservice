@@ -10,9 +10,7 @@ import (
 )
 
 const checkUserCredentials = `-- name: CheckUserCredentials :one
-SELECT EXISTS (
-    SELECT 1 FROM user_details WHERE user_name = $1 AND user_password = $2
-)
+SELECT id, first_name, last_name, user_name, user_password, email, mobile, created_at FROM user_details WHERE user_name = $1 AND user_password = $2
 `
 
 type CheckUserCredentialsParams struct {
@@ -20,11 +18,20 @@ type CheckUserCredentialsParams struct {
 	UserPassword string `json:"user_password"`
 }
 
-func (q *Queries) CheckUserCredentials(ctx context.Context, arg CheckUserCredentialsParams) (bool, error) {
+func (q *Queries) CheckUserCredentials(ctx context.Context, arg CheckUserCredentialsParams) (UserDetail, error) {
 	row := q.db.QueryRowContext(ctx, checkUserCredentials, arg.UserName, arg.UserPassword)
-	var exists bool
-	err := row.Scan(&exists)
-	return exists, err
+	var i UserDetail
+	err := row.Scan(
+		&i.ID,
+		&i.FirstName,
+		&i.LastName,
+		&i.UserName,
+		&i.UserPassword,
+		&i.Email,
+		&i.Mobile,
+		&i.CreatedAt,
+	)
+	return i, err
 }
 
 const createAddress = `-- name: CreateAddress :one

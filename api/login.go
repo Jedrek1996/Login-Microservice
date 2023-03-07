@@ -3,6 +3,7 @@ package api
 import (
 	db "Microservice-Login/database/sqlc"
 	"Microservice-Login/util"
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -36,18 +37,26 @@ func (server *Server) userLogin(ctx *gin.Context) {
 		return
 	}
 
-	arg := db.CheckUserCredentialsParams{
-		UserName:     userReq.UserName,
-		UserPassword: userReq.UserPassword,
+	hashedPassword, err := util.HashString(userReq.UserPassword)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Password hashing failed"})
+		return
 	}
 
+	arg := db.CheckUserCredentialsParams{
+		UserName:     userReq.UserName,
+		UserPassword: hashedPassword,
+	}
+
+	//Retrives the credential if does not exist, returns error
 	userCred, err := server.store.CheckUserCredentials(ctx, arg)
 
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, ErrorResponse(err))
+		fmt.Println(userCred)
 		return
 	}
 
-	ctx.JSON(http.StatusOK, userCred)
+	ctx.JSON(http.StatusOK, hashedPassword)
 
 }
