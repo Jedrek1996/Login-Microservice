@@ -7,6 +7,7 @@ package db
 
 import (
 	"context"
+	"time"
 )
 
 const createAddress = `-- name: CreateAddress :one
@@ -90,6 +91,16 @@ func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (UserDet
 	return i, err
 }
 
+const deleteCookieByID = `-- name: DeleteCookieByID :one
+DELETE FROM user_cookies WHERE id = $1 RETURNING id
+`
+
+func (q *Queries) DeleteCookieByID(ctx context.Context, id int32) (int32, error) {
+	row := q.db.QueryRowContext(ctx, deleteCookieByID, id)
+	err := row.Scan(&id)
+	return id, err
+}
+
 const getUserByUsername = `-- name: GetUserByUsername :one
 SELECT id, first_name, last_name, user_name, user_password, email, mobile, created_at FROM user_details WHERE user_name = $1
 `
@@ -105,6 +116,46 @@ func (q *Queries) GetUserByUsername(ctx context.Context, userName string) (UserD
 		&i.UserPassword,
 		&i.Email,
 		&i.Mobile,
+		&i.CreatedAt,
+	)
+	return i, err
+}
+
+const insertCookie = `-- name: InsertCookie :one
+INSERT INTO user_cookies (id, user_id, expires_at) VALUES ($1, $2, $3) RETURNING id, user_id, cookie_id, expires_at, created_at
+`
+
+type InsertCookieParams struct {
+	ID        int32     `json:"id"`
+	UserID    int32     `json:"user_id"`
+	ExpiresAt time.Time `json:"expires_at"`
+}
+
+func (q *Queries) InsertCookie(ctx context.Context, arg InsertCookieParams) (UserCookie, error) {
+	row := q.db.QueryRowContext(ctx, insertCookie, arg.ID, arg.UserID, arg.ExpiresAt)
+	var i UserCookie
+	err := row.Scan(
+		&i.ID,
+		&i.UserID,
+		&i.CookieID,
+		&i.ExpiresAt,
+		&i.CreatedAt,
+	)
+	return i, err
+}
+
+const selectCookieByID = `-- name: SelectCookieByID :one
+SELECT id, user_id, cookie_id, expires_at, created_at FROM user_cookies WHERE id = $1 AND expires_at > NOW() LIMIT 1
+`
+
+func (q *Queries) SelectCookieByID(ctx context.Context, id int32) (UserCookie, error) {
+	row := q.db.QueryRowContext(ctx, selectCookieByID, id)
+	var i UserCookie
+	err := row.Scan(
+		&i.ID,
+		&i.UserID,
+		&i.CookieID,
+		&i.ExpiresAt,
 		&i.CreatedAt,
 	)
 	return i, err
