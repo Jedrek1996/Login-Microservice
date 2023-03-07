@@ -3,7 +3,6 @@ package api
 import (
 	db "Microservice-Login/database/sqlc"
 	"Microservice-Login/util"
-	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -26,13 +25,14 @@ func (server *Server) createUser(ctx *gin.Context) {
 		return
 	}
 
+	validatedUserName := util.ValidateUsername(req.UserName)
 	validatedPassword := util.ValidatePassword(req.UserPassword) //To ensure password has >8 characters (returns bool)
 
-	if validatedPassword {
+	if validatedUserName && validatedPassword {
 		hashedPassword, err := util.HashString(req.UserPassword)
 
 		if err != nil {
-			log.Fatalln(err)
+			ctx.JSON(http.StatusBadRequest, gin.H{"error": "Password hashing failed"})
 			return
 		}
 
@@ -54,7 +54,7 @@ func (server *Server) createUser(ctx *gin.Context) {
 		ctx.JSON(http.StatusOK, account)
 
 	} else {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid username format"}) // Not >8 characters
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid format"}) // Not >8 characters
 		return
 	}
 }
