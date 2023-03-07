@@ -15,25 +15,34 @@
  After cloning this repo
 
 1. Start up docker desktop
+- colima start (to start up dock)
 
 2. In this project CLI use the followind make commands in order:
+❗️ Use this commands if it is your first time running
 - make postgres (make postgres container for db connection)
 - make createdb (make the database)
 - make migrateup (make the database based on the schema in migration file)
 - make build (to build this project image)
+
+❗️ Use this commands only after you have created the containers before
 - make run (to run this project image)
-- go run cmd/main.go
+- make start (to run service)
 
-3. Testing for endpoint on postman
-Eg. http://localhost:8080/test1 (Create user)
+❗️ If container not running 
+- docker start <container id>
 
-Copy the URL and paste.
-Select POST
-Select BODY, Raw > JSON in blue dropdown
 
-Copy and paste into editor
+-- Testing API Endpoints -- 
+
+1. Copy the URL and paste in Postman
+2. Select POST
+3. Select BODY, Raw > JSON in blue dropdown
+4. Copy and paste into editor
+
+Create User Endpoint 🐣
+Endpoint - http://localhost:8080/createUser (Create User)
+
 Sample input
-
 {
   "first_name": "John",
   "last_name": "Doe",
@@ -43,6 +52,14 @@ Sample input
   "mobile": 1234567890
 }
 
+User Login Endpoint 🐣
+Endpoint - http://localhost:8080/userLogin (User Login)
+
+Sample input
+{
+  "user_name": "johndoe",
+  "user_password": "password123",
+}
 
 ---------- Guidelines for endpoints ---------- 😎
 1. Define clear and descriptive routes: Your routes should be clear and descriptive, making it easy for clients to understand how to call the endpoint. Use meaningful URL paths and HTTP methods (e.g. GET, POST, PUT, etc.).
