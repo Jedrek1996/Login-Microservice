@@ -37,15 +37,8 @@ func (server *Server) userLogin(ctx *gin.Context) {
 		return
 	}
 
-	hashedPassword, err := util.HashString(userReq.UserPassword)
-	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Password hashing failed"})
-		return
-	}
-
 	arg := db.CheckUserCredentialsParams{
-		UserName:     userReq.UserName,
-		UserPassword: hashedPassword,
+		UserName: userReq.UserName,
 	}
 
 	//Retrives the credential if does not exist, returns error
@@ -57,6 +50,13 @@ func (server *Server) userLogin(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusOK, hashedPassword)
+	correctPassword := util.CheckStringHash(userReq.UserPassword, userCred.UserPassword)
+
+	if !correctPassword {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Wrong password"})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, userCred)
 
 }
