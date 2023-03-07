@@ -9,31 +9,6 @@ import (
 	"context"
 )
 
-const checkUserCredentials = `-- name: CheckUserCredentials :one
-SELECT id, first_name, last_name, user_name, user_password, email, mobile, created_at FROM user_details WHERE user_name = $1 AND user_password = $2
-`
-
-type CheckUserCredentialsParams struct {
-	UserName     string `json:"user_name"`
-	UserPassword string `json:"user_password"`
-}
-
-func (q *Queries) CheckUserCredentials(ctx context.Context, arg CheckUserCredentialsParams) (UserDetail, error) {
-	row := q.db.QueryRowContext(ctx, checkUserCredentials, arg.UserName, arg.UserPassword)
-	var i UserDetail
-	err := row.Scan(
-		&i.ID,
-		&i.FirstName,
-		&i.LastName,
-		&i.UserName,
-		&i.UserPassword,
-		&i.Email,
-		&i.Mobile,
-		&i.CreatedAt,
-	)
-	return i, err
-}
-
 const createAddress = `-- name: CreateAddress :one
 INSERT INTO address (
 unit_number,
@@ -101,6 +76,26 @@ func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (UserDet
 		arg.Email,
 		arg.Mobile,
 	)
+	var i UserDetail
+	err := row.Scan(
+		&i.ID,
+		&i.FirstName,
+		&i.LastName,
+		&i.UserName,
+		&i.UserPassword,
+		&i.Email,
+		&i.Mobile,
+		&i.CreatedAt,
+	)
+	return i, err
+}
+
+const getUserByUsername = `-- name: GetUserByUsername :one
+SELECT id, first_name, last_name, user_name, user_password, email, mobile, created_at FROM user_details WHERE user_name = $1
+`
+
+func (q *Queries) GetUserByUsername(ctx context.Context, userName string) (UserDetail, error) {
+	row := q.db.QueryRowContext(ctx, getUserByUsername, userName)
 	var i UserDetail
 	err := row.Scan(
 		&i.ID,
