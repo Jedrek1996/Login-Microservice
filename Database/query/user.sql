@@ -20,5 +20,5 @@ mobile
     $1, $2, $3, $4, $5, $6
 ) RETURNING *;
 
--- name: CheckUserCredentials :one
-SELECT * FROM user_details WHERE user_name = $1 AND user_password = $2;
+-- name: GetUserByUsername :one
+SELECT * FROM user_details WHERE user_name = $1;
