@@ -36,7 +36,7 @@ func RandomEmailGenerator() (email string) {
 func RandomMobileGenerator() int32 {
 	mobile := gofakeit.Phone()
 	mobile = removePart(mobile)
-	return convertToInt32(mobile)
+	return ConvertToInt32(mobile)
 }
 
 // Specifically for mobile as the generated number is more than 8 digits ---✨
@@ -56,7 +56,7 @@ func removePart(str string) string {
 }
 
 // Converts string to int64 to int 32 ---✨
-func convertToInt32(s string) (int32Val int32) {
+func ConvertToInt32(s string) (int32Val int32) {
 	i, err := strconv.ParseInt(s, 10, 64)
 	if err != nil {
 		panic(err)
