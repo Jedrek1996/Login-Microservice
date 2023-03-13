@@ -5,6 +5,7 @@ go 1.19
 require (
 	github.com/brianvoe/gofakeit/v6 v6.20.1
 	github.com/gin-gonic/gin v1.9.0
+	github.com/google/uuid v1.3.0
 	github.com/lib/pq v1.10.7
 	github.com/satori/go.uuid v1.2.0
 	github.com/stretchr/testify v1.8.2
