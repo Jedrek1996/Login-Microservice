@@ -7,8 +7,6 @@ package db
 import (
 	"database/sql"
 	"time"
-
-	"github.com/google/uuid"
 )
 
 type Address struct {
@@ -27,8 +25,8 @@ type CustomerAddress struct {
 
 type UserCookie struct {
 	ID        int32     `json:"id"`
-	UserID    int32     `json:"user_id"`
-	CookieID  uuid.UUID `json:"cookie_id"`
+	UserName  string    `json:"user_name"`
+	CookieID  int32     `json:"cookie_id"`
 	ExpiresAt time.Time `json:"expires_at"`
 	CreatedAt time.Time `json:"created_at"`
 }

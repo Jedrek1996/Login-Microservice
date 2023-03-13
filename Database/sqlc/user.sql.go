@@ -122,21 +122,21 @@ func (q *Queries) GetUserByUsername(ctx context.Context, userName string) (UserD
 }
 
 const insertCookie = `-- name: InsertCookie :one
-INSERT INTO user_cookies (id, user_id, expires_at) VALUES ($1, $2, $3) RETURNING id, user_id, cookie_id, expires_at, created_at
+INSERT INTO user_cookies (user_name ,cookie_id, expires_at) VALUES ($1, $2, $3) RETURNING id, user_name, cookie_id, expires_at, created_at
 `
 
 type InsertCookieParams struct {
-	ID        int32     `json:"id"`
-	UserID    int32     `json:"user_id"`
+	UserName  string    `json:"user_name"`
+	CookieID  int32     `json:"cookie_id"`
 	ExpiresAt time.Time `json:"expires_at"`
 }
 
 func (q *Queries) InsertCookie(ctx context.Context, arg InsertCookieParams) (UserCookie, error) {
-	row := q.db.QueryRowContext(ctx, insertCookie, arg.ID, arg.UserID, arg.ExpiresAt)
+	row := q.db.QueryRowContext(ctx, insertCookie, arg.UserName, arg.CookieID, arg.ExpiresAt)
 	var i UserCookie
 	err := row.Scan(
 		&i.ID,
-		&i.UserID,
+		&i.UserName,
 		&i.CookieID,
 		&i.ExpiresAt,
 		&i.CreatedAt,
@@ -145,7 +145,7 @@ func (q *Queries) InsertCookie(ctx context.Context, arg InsertCookieParams) (Use
 }
 
 const selectCookieByID = `-- name: SelectCookieByID :one
-SELECT id, user_id, cookie_id, expires_at, created_at FROM user_cookies WHERE id = $1 AND expires_at > NOW() LIMIT 1
+SELECT id, user_name, cookie_id, expires_at, created_at FROM user_cookies WHERE id = $1 AND expires_at > NOW() LIMIT 1
 `
 
 func (q *Queries) SelectCookieByID(ctx context.Context, id int32) (UserCookie, error) {
@@ -153,7 +153,7 @@ func (q *Queries) SelectCookieByID(ctx context.Context, id int32) (UserCookie, e
 	var i UserCookie
 	err := row.Scan(
 		&i.ID,
-		&i.UserID,
+		&i.UserName,
 		&i.CookieID,
 		&i.ExpiresAt,
 		&i.CreatedAt,
