@@ -27,6 +27,15 @@ func (server *Server) userLogin(ctx *gin.Context) {
 		return
 	}
 
+	_, err := ctx.Request.Cookie(userReq.UserName)
+
+	if err == nil {
+		// Cookie already exists, do not set again
+		fmt.Println("Cookie already exists for user:", userReq.UserName)
+		ctx.JSON(http.StatusOK, "User already logged in:"+userReq.UserName)
+		return
+	}
+
 	//To ensure username/password has >8 characters (returns bool)
 	validatedUserName := util.ValidateUsername(userReq.UserName)
 	validatedPassword := util.ValidatePassword(userReq.UserPassword)
@@ -57,7 +66,7 @@ func (server *Server) userLogin(ctx *gin.Context) {
 		return
 	}
 
-	server.SetCookie(ctx.Writer, userCred, time.Hour)
+	server.SetCookie(ctx, userCred, time.Hour)
 	fmt.Println("Set cookies for:" + userCred.UserName)
 	ctx.JSON(http.StatusOK, "User logged in:"+userCred.UserName)
 }
