@@ -26,8 +26,8 @@ SELECT * FROM user_details WHERE user_name = $1;
 -- name: InsertCookie :one
 INSERT INTO user_cookies (user_name ,cookie_id, expires_at) VALUES ($1, $2, $3) RETURNING *;
 
--- name: SelectCookieByID :one
-SELECT * FROM user_cookies WHERE id = $1 AND expires_at > NOW() LIMIT 1;
+-- name: SelectCookieByUserName :one
+SELECT * FROM user_cookies WHERE user_name = $1 AND expires_at > NOW() LIMIT 1;
 
--- name: DeleteCookieByID :one
-DELETE FROM user_cookies WHERE id = $1 RETURNING id;
+-- name: DeleteCookieByUserName :one
+DELETE FROM user_cookies WHERE user_name = $1 RETURNING user_name;
