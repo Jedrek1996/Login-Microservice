@@ -18,7 +18,7 @@ jobs:
         env:
           POSTGRES_USER: root 
           POSTGRES_PASSWORD: secret
-          POSTGRES_DB: FoodPanda9
+          POSTGRES_DB: loginMicroservice9
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
