@@ -91,14 +91,15 @@ func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (UserDet
 	return i, err
 }
 
-const deleteCookieByID = `-- name: DeleteCookieByID :one
-DELETE FROM user_cookies WHERE id = $1 RETURNING id
+const deleteCookieByUserName = `-- name: DeleteCookieByUserName :one
+DELETE FROM user_cookies WHERE user_name = $1 RETURNING user_name
 `
 
-func (q *Queries) DeleteCookieByID(ctx context.Context, id int32) (int32, error) {
-	row := q.db.QueryRowContext(ctx, deleteCookieByID, id)
-	err := row.Scan(&id)
-	return id, err
+func (q *Queries) DeleteCookieByUserName(ctx context.Context, userName string) (string, error) {
+	row := q.db.QueryRowContext(ctx, deleteCookieByUserName, userName)
+	var user_name string
+	err := row.Scan(&user_name)
+	return user_name, err
 }
 
 const getUserByUsername = `-- name: GetUserByUsername :one
@@ -144,12 +145,12 @@ func (q *Queries) InsertCookie(ctx context.Context, arg InsertCookieParams) (Use
 	return i, err
 }
 
-const selectCookieByID = `-- name: SelectCookieByID :one
-SELECT id, user_name, cookie_id, expires_at, created_at FROM user_cookies WHERE id = $1 AND expires_at > NOW() LIMIT 1
+const selectCookieByUserName = `-- name: SelectCookieByUserName :one
+SELECT id, user_name, cookie_id, expires_at, created_at FROM user_cookies WHERE user_name = $1 AND expires_at > NOW() LIMIT 1
 `
 
-func (q *Queries) SelectCookieByID(ctx context.Context, id int32) (UserCookie, error) {
-	row := q.db.QueryRowContext(ctx, selectCookieByID, id)
+func (q *Queries) SelectCookieByUserName(ctx context.Context, userName string) (UserCookie, error) {
+	row := q.db.QueryRowContext(ctx, selectCookieByUserName, userName)
 	var i UserCookie
 	err := row.Scan(
 		&i.ID,

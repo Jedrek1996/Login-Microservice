@@ -20,7 +20,7 @@ const (
 	password = "1234"
 	dbname   = "first_db"
 	dbDriver = "postgres"
-	dbSource = "postgresql://root:secret@localhost:5430/FoodPanda9?sslmode=disable"
+	dbSource = "postgresql://root:secret@localhost:5430/loginMicroservice9?sslmode=disable"
 )
 
 type userCreds struct {
