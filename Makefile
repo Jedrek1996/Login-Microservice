@@ -30,15 +30,14 @@ sqlc:
 build:
 	docker build -t login9 .
 
-💥# FOR THE ABOVE ONLY GENERATE WHEN NECESSARY #💥
-
+#💥 FOR THE ABOVE ONLY GENERATE WHEN NECESSARY #💥
 #In order to run this service open 2 CLI, one for each command below and make run, make start in each CLI.
 
 #Run Login Service container (Need to run this in order to use in concurrently with other services)
 run: 
 	docker run -p 8080:8080 login9
 
-#START SERVICE#🎋
+#START SERVICE#🎋 (Should see a pop, click allow)
 start:
 	go run cmd/main.go 
 
