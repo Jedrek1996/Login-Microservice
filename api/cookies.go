@@ -42,7 +42,7 @@ func (s *Server) SetCookie(w http.ResponseWriter, userDetail db.UserDetail, dura
 	// JED TO CONTINUE WIT COOKIES WORKFLOW. NOW shld be okay
 }
 
-func GetCookie(r *http.Request, name string) (*http.Cookie, error) {
+func (s *Server) GetCookie(r *http.Request, name string) (*http.Cookie, error) {
 	cookie, err := r.Cookie(name)
 	if err != nil {
 		return nil, err
@@ -50,13 +50,15 @@ func GetCookie(r *http.Request, name string) (*http.Cookie, error) {
 	return cookie, nil
 }
 
-func ClearCookie(w http.ResponseWriter, name string) {
+func (s *Server) ClearCookie(w http.ResponseWriter, name string) {
 	expires := time.Unix(0, 0)
 	cookie := http.Cookie{
 		Name:    name,
 		Value:   "",
 		Expires: expires,
 	}
+
+	s.store.DeleteCookieByUserName(context.Background(), name)
 	http.SetCookie(w, &cookie)
 }
 

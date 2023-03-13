@@ -14,6 +14,10 @@ type UserLoginRequest struct {
 	UserPassword string `json:"user_password" binding:"required"`
 }
 
+type UserLogoutRequest struct {
+	UserName string `json:"user_name" binding:"required"`
+}
+
 func (server *Server) userLogin(ctx *gin.Context) {
 
 	var userReq UserLoginRequest
@@ -54,7 +58,18 @@ func (server *Server) userLogin(ctx *gin.Context) {
 	}
 
 	server.SetCookie(ctx.Writer, userCred, time.Hour)
-	fmt.Println("Set cookies")
-	ctx.JSON(http.StatusOK, userCred)
+	fmt.Println("Set cookies for:" + userCred.UserName)
+	ctx.JSON(http.StatusOK, "User logged in:"+userCred.UserName)
+}
 
+func (server *Server) userLogout(ctx *gin.Context) {
+	var userReq UserLogoutRequest
+	if err := ctx.ShouldBindJSON(&userReq); err != nil {
+		ctx.JSON(http.StatusBadRequest, ErrorResponse(err))
+		return
+	}
+
+	server.ClearCookie(ctx.Writer, userReq.UserName)
+
+	ctx.JSON(http.StatusOK, "Cookies deleted for:"+userReq.UserName)
 }
