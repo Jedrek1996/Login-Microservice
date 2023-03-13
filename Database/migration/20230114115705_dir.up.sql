@@ -11,11 +11,11 @@ CREATE TABLE "user_details" (
 
 CREATE TABLE "user_cookies" (
   "id" SERIAL PRIMARY KEY,
-  "user_id" INTEGER NOT NULL,
-  "cookie_id" UUID NOT NULL UNIQUE,
+  "user_name" varchar NOT NULL UNIQUE,
+  "cookie_id" int NOT NULL UNIQUE,
   "expires_at" TIMESTAMP NOT NULL,
   "created_at" TIMESTAMP NOT NULL DEFAULT (now()),
-  FOREIGN KEY ("user_id") REFERENCES "user_details" ("id")
+  FOREIGN KEY ("user_name") REFERENCES "user_details" ("user_name")
 );
 
 CREATE TABLE "customer_address" (
@@ -33,17 +33,10 @@ CREATE TABLE "address" (
 );
 
 CREATE INDEX ON "user_details" ("id");
-
-CREATE INDEX ON "customer_address" ("id");
-
+CREATE INDEX ON "user_cookies" ("user_name");
+CREATE INDEX ON "user_cookies" ("cookie_id");
 CREATE INDEX ON "address" ("id");
-
 CREATE INDEX ON "address" ("postal_code");
 
-CREATE INDEX ON "user_cookies" ("user_id");
-
-CREATE INDEX ON "user_cookies" ("cookie_id");
-
 ALTER TABLE "customer_address" ADD FOREIGN KEY ("user_id") REFERENCES "user_details" ("id");
-
 ALTER TABLE "customer_address" ADD FOREIGN KEY ("address_id") REFERENCES "address" ("id");

@@ -24,7 +24,7 @@ mobile
 SELECT * FROM user_details WHERE user_name = $1;
 
 -- name: InsertCookie :one
-INSERT INTO user_cookies (id, user_id, expires_at) VALUES ($1, $2, $3) RETURNING *;
+INSERT INTO user_cookies (user_name ,cookie_id, expires_at) VALUES ($1, $2, $3) RETURNING *;
 
 -- name: SelectCookieByID :one
 SELECT * FROM user_cookies WHERE id = $1 AND expires_at > NOW() LIMIT 1;
