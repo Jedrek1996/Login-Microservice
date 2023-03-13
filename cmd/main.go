@@ -13,7 +13,6 @@ import (
 	util "Microservice-Login/util"
 
 	_ "github.com/lib/pq"
-
 )
 
 var tpl *template.Template
@@ -22,7 +21,7 @@ var newDB *sql.DB
 
 const (
 	dbDriver      = "postgres"
-	dbSource      = "postgresql://root:secret@localhost:5430/FoodPanda9?sslmode=disable"
+	dbSource      = "postgresql://root:secret@localhost:5430/loginMicroservice9?sslmode=disable"
 	serverAddress = "0.0.0.0:8080"
 )
 
