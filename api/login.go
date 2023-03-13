@@ -4,6 +4,7 @@ import (
 	"Microservice-Login/util"
 	"fmt"
 	"net/http"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
@@ -52,6 +53,8 @@ func (server *Server) userLogin(ctx *gin.Context) {
 		return
 	}
 
+	server.SetCookie(ctx.Writer, userCred, time.Hour)
+	fmt.Println("Set cookies")
 	ctx.JSON(http.StatusOK, userCred)
 
 }
