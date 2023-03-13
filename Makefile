@@ -35,7 +35,7 @@ build:
 
 #Run Login Service container (Need to run this in order to use in concurrently with other services)
 run: 
-	docker run -p 8080:8080 login9
+	docker run -p 5430:8080 login9
 
 #START SERVICE#🎋 (Should see a pop, click allow)
 start:
