@@ -22,7 +22,7 @@ var newDB *sql.DB
 const (
 	dbDriver      = "postgres"
 	dbSource      = "postgresql://root:secret@localhost:5430/loginMicroservice9?sslmode=disable"
-	serverAddress = "0.0.0.0:8080"
+	serverAddress = "0.0.0.0:8084"
 )
 
 func init() {
