@@ -1,9 +1,12 @@
+tools:
+	brew install golang-migrate
+
 #Create postgres image and runs it
 postgres:
 	docker run --name postgres12 -p 5430:5432 -e POSTGRES_USER=root -e POSTGRES_PASSWORD=secret -d postgres:12-alpine
 
-#Creates Login Database 
-createdb: 
+#Creates Login Database
+createdb:
 	docker exec -it postgres12 createdb --username=root --owner=root loginMicroservice9
 
 #Deletes Login Datase
@@ -11,7 +14,7 @@ dropdb:
 	docker exec -it postgres12 dropdb loginMicroservice9
 
 #Creats the tables based on the schemas
-migrateup: 
+migrateup:
 	migrate -path database/migration -database "postgresql://root:secret@localhost:5430/loginMicroservice9?sslmode=disable" -verbose up
 
 #Deletes the tables based on the schemas
@@ -34,11 +37,20 @@ build:
 #In order to run this service open 2 CLI, one for each command below and make run, make start in each CLI.
 
 #Run Login Service container (Need to run this in order to use in concurrently with other services)
-run: 
+run:
 	docker run -p 5430:8080 login9
 
 #START SERVICE#🎋 (Should see a pop, click allow)
 start:
-	go run cmd/main.go 
+	go run cmd/main.go
+
+down:
+	docker stop postgres12
+	docker rm postgres12
+	docker stop login9
+	docker rm login9 
+
+start-all:
+	bash start.sh 
 
 .PHONY: createdb dropdb postgres migratedown migrateup test build run start
