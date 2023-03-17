@@ -45,12 +45,16 @@ start:
 	go run cmd/main.go
 
 down:
-	docker stop postgres12
-	docker rm postgres12
-	docker stop login9
-	docker rm login9 
+	-docker stop postgres12
+	-docker rm postgres12
+	-docker stop login9
+	-docker rm login9 
 
 start-all:
+	-docker stop postgres12
+	-docker rm postgres12
+	-docker stop login9
+	-docker rm login9 
 	bash start.sh 
 
 .PHONY: createdb dropdb postgres migratedown migrateup test build run start
