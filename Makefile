@@ -46,15 +46,23 @@ start:
 
 down:
 	-docker stop postgres12
-	-docker rm postgres12
-	-docker stop login9
-	-docker rm login9 
+	-docker rm -f postgres12
+	-docker stop login-service
+	-docker rm -f login-service
 
-start-all:
+start-container:
 	-docker stop postgres12
-	-docker rm postgres12
-	-docker stop login9
-	-docker rm login9 
-	bash start.sh 
+	-docker rm -f postgres12
+	-docker stop login-service
+	-docker rm -f login-service
+	-docker network rm login-service-net
+	bash start.sh
+	
+start-host:
+	-docker stop postgres12
+	-docker rm -f postgres12
+	-docker stop login-service
+	-docker rm -f login-service
+	bash start_host.sh
 
 .PHONY: createdb dropdb postgres migratedown migrateup test build run start

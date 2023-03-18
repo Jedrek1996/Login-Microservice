@@ -1,7 +1,6 @@
-	docker network create login-service-net
 
 	# use --rm to remove the container once stop
-	docker run --rm --net login-service-net --name postgres12 -p 5430:5432 -e POSTGRES_USER=root -e POSTGRES_PASSWORD=secret -d postgres:12-alpine;
+	docker run --rm --name postgres12 -p 5430:5432 -e POSTGRES_USER=root -e POSTGRES_PASSWORD=secret -d postgres:12-alpine;
 	
 	# add sleep of 3 seconds, otherwise, too fast action might not have enough time for postgres container get ready
 	sleep 3
@@ -11,9 +10,4 @@
 	sleep 3
 	migrate -path database/migration -database "postgresql://root:secret@localhost:5430/loginMicroservice9?sslmode=disable" -verbose up
 
-	docker build -t login9 .;
-
-	# use --rm to remove the container once stop
-	docker run --net login-service-net --name login-service -p 8080:8080 login9
-
-
+	go run -v ./cmd/main.go
