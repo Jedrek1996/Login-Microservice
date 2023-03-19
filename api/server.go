@@ -16,12 +16,14 @@ type Server struct {
 // Creates new http server and setup routing
 func NewServer(store *db.Store) *Server {
 	server := &Server{store: store}
+
 	router := gin.Default()
 
 	router.POST("/createUser", server.createUser)
 	router.POST("/userLogin", server.userLogin)
 	router.POST("/userLogout", server.userLogout)
 	router.POST("/test", server.AuthCookieMiddleware(), server.TestCookie)
+	router.GET("/", server.welcome)
 
 	router.GET("/protected_route", server.AuthCookieMiddleware(), func(c *gin.Context) {
 		// This route is protected and can only be accessed by authenticated users

@@ -18,6 +18,10 @@ type UserLogoutRequest struct {
 	UserName string `json:"user_name" binding:"required"`
 }
 
+func (server *Server) welcome(ctx *gin.Context) {
+	ctx.JSON(http.StatusOK, "Welcome to login service")
+}
+
 func (server *Server) userLogin(ctx *gin.Context) {
 
 	var userReq UserLoginRequest
