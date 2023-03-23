@@ -8,8 +8,9 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strconv"
 
-	"Microservice-Login/api"
+	api "Microservice-Login/api"
 	db "Microservice-Login/database/sqlc"
 	util "Microservice-Login/util"
 
@@ -30,12 +31,15 @@ func main() {
 
 	tpl = template.Must(template.ParseGlob("./templates/testTemplates/*"))
 
+	appCon := getConfig()
+
 	dbSource := ""
-	if isRunOnHost() {
+	if appCon.RunOnHost {
 		dbSource = "postgresql://root:secret@localhost:5430/loginMicroservice9?sslmode=disable"
 	} else {
 		dbSource = "postgresql://root:secret@postgres12:5432/loginMicroservice9?sslmode=disable"
 	}
+
 	var err error
 	newDB, err = sql.Open(dbDriver, dbSource)
 
@@ -46,6 +50,7 @@ func main() {
 	store := db.NewStore(newDB)
 	server := api.NewServer(store)
 
+	server.AppCon = appCon
 	err = server.Start(serverAddress)
 	if err != nil {
 		fmt.Println("hit here")
@@ -67,12 +72,21 @@ func main() {
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
 
-func isRunOnHost() bool {
-	fmt.Println(goDotEnvVariable("RUN_ON_HOST"))
+func getConfig() *api.AppConfiguration {
+
+	runOnHost := false
 	if goDotEnvVariable("Run_ON_HOST") == "true" {
-		return true
-	} else {
-		return false
+		runOnHost = true
+	}
+
+	expireSec, err := strconv.Atoi(goDotEnvVariable("TOKEN_EXPIRE_SECS"))
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return &api.AppConfiguration{
+		RunOnHost: runOnHost,
+		ExpireSec: expireSec,
 	}
 }
 

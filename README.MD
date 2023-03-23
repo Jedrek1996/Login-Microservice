@@ -17,7 +17,7 @@ After cloning this repo. Go to the makefile and check for the commands.
 - colima start (to start up dock)
 
 2. type "make start-all" command
-   two docker containers are built and run. database is migrated.
+   The two docker containers are built and run. database is also migrated.
 
 Now you could try the API with Postman.
 
