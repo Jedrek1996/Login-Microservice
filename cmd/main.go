@@ -74,19 +74,30 @@ func main() {
 
 func getConfig() *api.AppConfiguration {
 
-	runOnHost := false
-	if goDotEnvVariable("Run_ON_HOST") == "true" {
-		runOnHost = true
+	err := godotenv.Load(".env")
+
+	if err != nil {
+		log.Fatalf("Error loading .env file")
 	}
 
-	expireSec, err := strconv.Atoi(goDotEnvVariable("TOKEN_EXPIRE_SECS"))
+	expireSec, err := strconv.Atoi(os.Getenv("TOKEN_EXPIRE_SECS"))
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	isRunOnHost, err := strconv.ParseBool(os.Getenv("Run_ON_HOST"))
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	return &api.AppConfiguration{
-		RunOnHost: runOnHost,
-		ExpireSec: expireSec,
+		RunOnHost:                        isRunOnHost,
+		TokenExpireSecs:                  expireSec,
+		ServicePort:                      os.Getenv("SERVICE_PORT"),
+		EmailServiceContainerName:        os.Getenv("MAIL_SERVICE"),
+		LoginServiceContainerName:        os.Getenv("LOGIN_SERVICE"),
+		PlaylistServiceContainerName:     os.Getenv("PLATLIST_SERVICE"),
+		SubscriptionServiceContainerName: os.Getenv("SUBSCRIPTION_SERVICE"),
 	}
 }
 

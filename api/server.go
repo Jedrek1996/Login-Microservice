@@ -19,8 +19,13 @@ type Server struct {
 }
 
 type AppConfiguration struct {
-	RunOnHost bool
-	ExpireSec int
+	RunOnHost                        bool
+	TokenExpireSecs                  int
+	ServicePort                      string
+	EmailServiceContainerName        string
+	PlaylistServiceContainerName     string
+	SubscriptionServiceContainerName string
+	LoginServiceContainerName        string
 }
 
 // Creates new http server and setup routing

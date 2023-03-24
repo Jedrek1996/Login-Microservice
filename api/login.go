@@ -103,8 +103,7 @@ func (server *Server) userLogin(ctx *gin.Context) {
 
 	// When user hit login entrypoint successfully, assign a new JWT token and set it to cookie
 	// The browser needs to carry this cookie in every request header later on.
-	// change duration value if needed. 300 is just a test value.
-	duration := time.Duration(time.Second) * time.Duration(server.AppCon.ExpireSec)
+	duration := time.Duration(time.Second) * time.Duration(server.AppCon.TokenExpireSecs)
 	token, err := server.jwtMaker.CreateJWTToken(string(userCred.ID), duration)
 	if err != nil {
 		log.Fatal(err)
