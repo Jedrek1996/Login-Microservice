@@ -1,3 +1,6 @@
+#include .env if exists
+-include .env
+
 tools:
 	brew install golang-migrate
 
@@ -64,5 +67,15 @@ start-host:
 	-docker stop login-service
 	-docker rm -f login-service
 	bash start_host.sh
+
+start-auto:
+	@if ("$(Run_ON_HOST)" == "true"); then\
+        echo "Hello world"; \
+		make start-host; \
+	else \
+		make start-container; \
+    fi
+
+
 
 .PHONY: createdb dropdb postgres migratedown migrateup test build run start
