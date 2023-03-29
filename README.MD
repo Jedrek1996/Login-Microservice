@@ -32,7 +32,7 @@ Now you could try the API with Postman.
 ❗️ Use this commands only after you have created the containers before
 💥(USE 2 Seperate CLI for each make command)💥
 
-- make run (to run this project image)
+- docker start (POSTGRES container)
 - make start (to run service)
 
 ❗️ If container not running
@@ -47,8 +47,8 @@ Now you could try the API with Postman.
 3. Select BODY, Raw > JSON in blue dropdown
 4. Copy and paste into editor
 
-Create User Endpoint 🐣
-Endpoint - http://localhost:8080/createUser (Create User, Unique Username, Email and Mobile)
+Create User Endpoint 🐣 (Create User, Unique Username, Email and Mobile)
+Endpoint - http://localhost:8080/createUser  POST
 
 Sample input
 {
@@ -61,7 +61,7 @@ Sample input
 }
 
 User Login Endpoint 🐣 (Store cookie in db and local storage)
-Endpoint - http://localhost:8080/userLogin (User Login)
+Endpoint - http://localhost:8080/userLogin  POST
 
 Sample input
 {
@@ -70,7 +70,15 @@ Sample input
 }
 
 User Logout Endpoint 🐣 (Removes cookie in db and local storage)
-Endpoint - http://localhost:8080/userLogin (User Logout)
+Endpoint - http://localhost:8080/userLogout  POST
+
+Sample input
+{
+"user_name": "johndoe",
+}
+
+User Logout Endpoint 🐣 (Gets the user data that is logged in to render the profile information)
+Endpoint - http://localhost:8080/getUserData  POST
 
 Sample input
 {
