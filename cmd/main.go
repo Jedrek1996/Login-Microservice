@@ -8,7 +8,7 @@ import (
 	"log"
 	"net/http"
 
-	"Microservice-Login/api"
+	api "Microservice-Login/api"
 	db "Microservice-Login/database/sqlc"
 	util "Microservice-Login/util"
 
@@ -49,6 +49,11 @@ func init() {
 }
 
 func main() {
+
+	// r := gin.Default()
+	// config := cors.DefaultConfig()
+	// config.AllowOrigins = []string{"http://localhost:3000"}
+	// r.Use(cors.New(config))
 	//CSS Files for testing
 	queries = db.New(newDB)
 	fs := http.FileServer(http.Dir("./templates"))

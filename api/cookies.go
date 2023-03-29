@@ -26,9 +26,12 @@ func (s *Server) SetCookie(ctx *gin.Context, userDetail db.UserDetail, duration 
 	expires := time.Now().Add(duration)
 	cookieID := getUUIDInt32()
 	cookie := http.Cookie{
-		Name:    userDetail.UserName,
-		Value:   strconv.Itoa(int(cookieID)),
-		Expires: expires,
+		Name:     userDetail.UserName,
+		Value:    strconv.Itoa(int(cookieID)),
+		Expires:  expires,
+		Path:     "/",
+		HttpOnly: true,
+		Secure:   false, // set this to true if using HTTPS
 	}
 	http.SetCookie(ctx.Writer, &cookie)
 
@@ -127,7 +130,7 @@ func (s *Server) AuthCookieMiddleware() gin.HandlerFunc {
 
 // Used for testing if cookies exist if not redirect.
 func (server *Server) TestCookie(ctx *gin.Context) {
-	var userReq UserLogoutRequest
+	var userReq UserUserNameRequest
 	if err := ctx.ShouldBindJSON(&userReq); err != nil {
 		ctx.JSON(http.StatusBadRequest, ErrorResponse(err))
 		return
@@ -159,7 +162,6 @@ func (server *Server) TestCookie(ctx *gin.Context) {
 
 	ctx.JSON(http.StatusOK, "Testing middleware for "+userReq.UserName)
 }
-
 
 //JED --- NOW need to check how to authenticate the cookies on each render onto a newpage using the middleware. iF NOT redirect to home page
 // On logout change the user logout to smth else.
