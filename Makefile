@@ -37,8 +37,15 @@ build:
 run: 
 	docker run -p 5430:8080 login9
 
-#START SERVICE#🎋 (Should see a pop, click allow)
+
+
+#START SERVICE#🎋 
+#docker start container id
+
+#(Should see a pop, click allow)
 start:
 	go run cmd/main.go 
+
+setup-service: postgres createdb migrateup build
 
 .PHONY: createdb dropdb postgres migratedown migrateup test build run start
