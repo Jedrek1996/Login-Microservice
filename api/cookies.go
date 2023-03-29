@@ -3,6 +3,7 @@ package api
 import (
 	"context"
 	"fmt"
+	"log"
 	"math/big"
 	"net/http"
 	"strconv"
@@ -21,7 +22,17 @@ type GetCookieRequest struct {
 	CookieID string `json:"cookie_id" binding:"required"`
 }
 
-func (s *Server) SetCookie(ctx *gin.Context, userDetail db.UserDetail, duration time.Duration) {
+func (s *Server) SetTokenCookie(ctx *gin.Context, token string) {
+
+	cookie := http.Cookie{
+		Name:  "token",
+		Value: token,
+	}
+	http.SetCookie(ctx.Writer, &cookie)
+	log.Println("Token Cookie set successfully:", token)
+}
+
+func (s *Server) SetUserCookie(ctx *gin.Context, userDetail db.UserDetail, duration time.Duration) {
 
 	expires := time.Now().Add(duration)
 	cookieID := getUUIDInt32()
@@ -47,8 +58,7 @@ func (s *Server) SetCookie(ctx *gin.Context, userDetail db.UserDetail, duration 
 		ctx.JSON(http.StatusUnauthorized, gin.H{"error": "Cannot set cookie"})
 		return
 	}
-	fmt.Println("User Cookie set:", userCookie)
-	ctx.JSON(http.StatusOK, "Cookies set for :"+userCookie.UserName)
+	log.Println("User Cookie set:", userCookie)
 }
 
 func (s *Server) GetCookie(r *http.Request, name string) (*http.Cookie, error) {
@@ -59,7 +69,17 @@ func (s *Server) GetCookie(r *http.Request, name string) (*http.Cookie, error) {
 	return cookie, nil
 }
 
-func (s *Server) ClearCookie(w http.ResponseWriter, name string) {
+func (s *Server) ClearTokenCookie(w http.ResponseWriter) {
+	expires := time.Unix(0, 0)
+	cookie := http.Cookie{
+		Name:    "token",
+		Value:   "",
+		Expires: expires,
+	}
+	http.SetCookie(w, &cookie)
+}
+
+func (s *Server) ClearUserCookie(w http.ResponseWriter, name string) {
 	expires := time.Unix(0, 0)
 	cookie := http.Cookie{
 		Name:    name,
@@ -91,19 +111,18 @@ func (s *Server) AuthCookieMiddleware() gin.HandlerFunc {
 
 		if err := ctx.ShouldBindJSON(&cookieReq); err != nil {
 			ctx.JSON(http.StatusBadRequest, ErrorResponse(err))
+			ctx.Abort()
 			return
 		}
 
 		cookie, err := s.GetCookie(ctx.Request, cookieReq.UserName)
 		if err != nil || cookie == nil {
-			fmt.Println("Unable to get cookie for" + cookieReq.UserName)
 			ctx.JSON(http.StatusBadRequest, ErrorResponse(err))
 			ctx.Abort()
 			return
 		}
 
-		cookieValue := cookie.Value
-		cookieParts := strings.Split(cookieValue, ":")
+		cookieParts := strings.Split(cookie.Value, ":")
 		if len(cookieParts) != 2 {
 			fmt.Println("Invalid Cookie for:" + cookieReq.UserName)
 			ctx.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid cookie value"})
@@ -123,8 +142,47 @@ func (s *Server) AuthCookieMiddleware() gin.HandlerFunc {
 		}
 
 		ctx.Next()
-
 		//Need to add redirect logic
+	}
+}
+
+func (s *Server) AuthenticateUser() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+
+		authorizationHeader := ctx.GetHeader("authorization")
+
+		if len(authorizationHeader) == 0 {
+			ctx.JSON(http.StatusUnauthorized, gin.H{"error": "authorization header is not provided"})
+			ctx.Abort()
+			return
+		}
+
+		fields := strings.Fields(authorizationHeader)
+		if len(fields) < 2 {
+
+			ctx.JSON(http.StatusUnauthorized, gin.H{"error": "invalid authorization header format"})
+			ctx.Abort()
+			return
+		}
+
+		authorizationType := strings.ToLower(fields[0])
+		if authorizationType != "bearer" {
+			ctx.JSON(http.StatusUnauthorized, gin.H{"error": "unsupported authorization type " + authorizationType})
+			ctx.Abort()
+			return
+		}
+
+		accessToken := fields[1]
+		payload, err := s.jwtVerfier.GetMetaData(accessToken)
+		if err != nil {
+			ctx.JSON(http.StatusUnauthorized, gin.H{"error": err.Error()})
+			ctx.Abort()
+			return
+		}
+
+		// add userID to the context of the request
+		ctx.Set("userID", payload.UserID)
+		ctx.Next()
 	}
 }
 

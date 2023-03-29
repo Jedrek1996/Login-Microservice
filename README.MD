@@ -1,9 +1,8 @@
-
 ⭐️---------- Current Task ----------⭐️
 
 1. Cookies (Left with middleware to authenticate when rendering a new page + redirect logic.)
 
------- Future things to be implemented if time persists------ 
+------ Future things to be implemented if time persists------
 
 1. Circuit breaker - https://levelup.gitconnected.com/circuit-breaker-example-in-golang-e6459c87eaeb
 
@@ -11,24 +10,33 @@
 
 ⭐️-------------- How to run this service? --------------⭐️
 
- After cloning this repo. Go to the makefile and check for the commands.
+After cloning this repo. Go to the makefile and check for the commands.
 
 1. Start up docker desktop
+
 - colima start (to start up dock)
 
-2. In this project CLI use the followind make commands in order:
+2. type "make start-all" command
+   The two docker containers are built and run. database is also migrated.
+
+Now you could try the API with Postman.
+
+**Other steps for reference in case you want more granular operaton** 2. In this project CLI use the followind make commands in order:
 ❗️ Use this commands if it is your first time running
+
 - make postgres (make postgres container for db connection)
 - make createdb (make the database)
 - make migrateup (make the database based on the schema in migration file)
 - make build (to build this project image)
 
-❗️ Use this commands only after you have created the containers before 
+❗️ Use this commands only after you have created the containers before
 💥(USE 2 Seperate CLI for each make command)💥
+
 - make run (to run this project image)
 - make start (to run service)
 
-❗️ If container not running 
+❗️ If container not running
+
 - docker ps -a (Returns all container)
 - docker start (Container ID)
 
@@ -39,17 +47,17 @@
 3. Select BODY, Raw > JSON in blue dropdown
 4. Copy and paste into editor
 
-Create User Endpoint 🐣 
+Create User Endpoint 🐣
 Endpoint - http://localhost:8080/createUser (Create User, Unique Username, Email and Mobile)
 
 Sample input
 {
-  "first_name": "John",
-  "last_name": "Doe",
-  "user_name": "johndoe",
-  "user_password": "password123",
-  "email": "johndoe@example.com",
-  "mobile": 1234567890
+"first_name": "John",
+"last_name": "Doe",
+"user_name": "johndoe",
+"user_password": "password123",
+"email": "johndoe@example.com",
+"mobile": 1234567890
 }
 
 User Login Endpoint 🐣 (Store cookie in db and local storage)
@@ -57,8 +65,8 @@ Endpoint - http://localhost:8080/userLogin (User Login)
 
 Sample input
 {
-  "user_name": "johndoe",
-  "user_password": "password123"
+"user_name": "johndoe",
+"user_password": "password123"
 }
 
 User Logout Endpoint 🐣 (Removes cookie in db and local storage)
@@ -66,9 +74,8 @@ Endpoint - http://localhost:8080/userLogin (User Logout)
 
 Sample input
 {
-  "user_name": "johndoe",
+"user_name": "johndoe",
 }
-
 
 Additional info:
 
