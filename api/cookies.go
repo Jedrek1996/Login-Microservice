@@ -172,16 +172,16 @@ func (s *Server) AuthenticateUser() gin.HandlerFunc {
 			return
 		}
 
-		accessToken := fields[1]
-		payload, err := s.jwtVerfier.GetMetaData(accessToken)
-		if err != nil {
-			ctx.JSON(http.StatusUnauthorized, gin.H{"error": err.Error()})
-			ctx.Abort()
-			return
-		}
+		// accessToken := fields[1]
+		// payload, err := s.jwtVerfier.GetMetaData(accessToken)
+		// if err != nil {
+		// 	ctx.JSON(http.StatusUnauthorized, gin.H{"error": err.Error()})
+		// 	ctx.Abort()
+		// 	return
+		// }
 
 		// add userID to the context of the request
-		ctx.Set("userID", payload.UserID)
+		// ctx.Set("userID", payload.UserID)
 		ctx.Next()
 	}
 }

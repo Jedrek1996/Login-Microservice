@@ -4,10 +4,11 @@ import (
 	"crypto/rsa"
 	"errors"
 	"fmt"
-	"github.com/golang-jwt/jwt"
 	"io/ioutil"
 	"log"
 	"time"
+
+	"github.com/golang-jwt/jwt"
 )
 
 const minSecretKeySize = 32

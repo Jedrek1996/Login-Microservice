@@ -119,7 +119,7 @@ func (server *Server) userLogout(ctx *gin.Context) {
 		return
 	}
 
-	server.ClearCookie(ctx.Writer, userReq.UserName)
+	// server.ClearCookie(ctx.Writer, userReq.UserName)
 
 	ctx.JSON(http.StatusOK, "Cookies deleted for:"+userReq.UserName)
 }
