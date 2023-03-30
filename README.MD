@@ -16,8 +16,8 @@ After cloning this repo. Go to the makefile and check for the commands.
 
 - colima start (to start up dock)
 
-2. type "make start-all" command
-   The two docker containers are built and run. database is also migrated.
+2. type "make start-auto" command
+   Depending on the setting in .dev file, the app will either run on host machine or in container.
 
 Now you could try the API with Postman.
 

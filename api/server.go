@@ -9,8 +9,22 @@ import (
 
 // Serves http request
 type Server struct {
-	store  *db.Store
-	router *gin.Engine
+
+	store      *db.Store
+	router     *gin.Engine
+	jwtMaker   *auth.JWTMaker
+	jwtVerfier *auth.JWTVerifier
+	AppCon     *AppConfiguration
+}
+
+type AppConfiguration struct {
+	RunOnHost                        bool
+	TokenExpireSecs                  int
+	ServicePort                      string
+	EmailServiceContainerName        string
+	PlaylistServiceContainerName     string
+	SubscriptionServiceContainerName string
+	LoginServiceContainerName        string
 }
 
 // Creates new http server and setup routing

@@ -78,6 +78,16 @@ func (server *Server) userLogin(ctx *gin.Context) {
 		return
 	}
 
+	server.SetUserCookie(ctx, userCred, time.Hour)
+	log.Println("Set cookies for:" + userCred.UserName)
+
+	// When user hit login entrypoint successfully, assign a new JWT token and set it to cookie
+	// The browser needs to carry this cookie in every request header later on.
+	duration := time.Duration(time.Second) * time.Duration(server.AppCon.TokenExpireSecs)
+	token, err := server.jwtMaker.CreateJWTToken(string(userCred.ID), duration)
+	if err != nil {
+		log.Fatal(err)
+  }
 	cookieVal := getUUIDInt32cookie()
 
 	// Set cookie with JWT token (passed to front end to set)
