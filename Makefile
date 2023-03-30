@@ -38,7 +38,6 @@ run:
 	docker run -p 5430:8080 login9
 
 
-
 #START SERVICE#🎋 
 #docker start container id
 

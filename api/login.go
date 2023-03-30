@@ -1,6 +1,7 @@
 package api
 
 import (
+	db "Microservice-Login/database/sqlc"
 	"Microservice-Login/util"
 	"fmt"
 	"math/big"
@@ -21,10 +22,11 @@ type UserUserNameRequest struct {
 }
 
 type UserLoginResponse struct {
-	Message  string      `json:"message"`
-	UserName string      `json:"user_name"`
-	Status   int         `json:"response_status"`
-	Cookie   http.Cookie `json:"cookie"`
+	Message  string        `json:"message"`
+	UserName string        `json:"user_name"`
+	Status   int           `json:"response_status"`
+	Cookie   http.Cookie   `json:"cookie"`
+	Details  db.UserDetail `json:"user_details"`
 }
 
 func (server *Server) userLogin(ctx *gin.Context) {
@@ -91,17 +93,17 @@ func (server *Server) userLogin(ctx *gin.Context) {
 	http.SetCookie(ctx.Writer, &cookie)
 
 	// Set cookies in database
-	// arg := db.InsertCookieParams{
-	// 	UserName: userCred.UserName,
-	// 	CookieID: cookieVal,
-	// }
+	arg := db.InsertCookieParams{
+		UserName: userCred.UserName,
+		CookieID: cookieVal,
+	}
 
-	// _, _ = server.store.InsertCookie(ctx, arg)
-	// if err != nil {
-	// 	fmt.Println("Cannot set cookie")
-	// 	ctx.JSON(http.StatusOK, gin.H{"error": "Cannot set cookie"})
-	// 	return
-	// }
+	_, _ = server.store.InsertCookie(ctx, arg)
+	if err != nil {
+		fmt.Println("Cannot set cookie")
+		ctx.JSON(http.StatusOK, gin.H{"error": "Cannot set cookie"})
+		return
+	}
 
 	fmt.Println("Set cookies for:" + userCred.UserName)
 	ctx.JSON(http.StatusOK, UserLoginResponse{
@@ -138,7 +140,12 @@ func (server *Server) getUserDetail(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusOK, userCred)
+	ctx.JSON(http.StatusOK, UserLoginResponse{
+		Message:  "User data retrieved from backend",
+		UserName: userCred.UserName,
+		Status:   http.StatusOK,
+		Details:  userCred,
+	})
 }
 
 func getUUIDInt32cookie() int32 {

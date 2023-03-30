@@ -30,7 +30,7 @@ func NewServer(store *db.Store) *Server {
 	router.POST("/userLogin", server.userLogin)
 	router.POST("/userLogout", server.userLogout)
 	router.POST("/getUserData", server.getUserDetail)
-	router.POST("/test", server.AuthCookieMiddleware(), server.TestCookie)
+	router.POST("/test", server.TestCookie)
 
 	server.router = router
 	return server
