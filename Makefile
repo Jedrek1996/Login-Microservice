@@ -43,6 +43,7 @@ build:
 run:
 	docker run -p 5430:8080 login9
 
+#docker start container 
 #START SERVICE#🎋 (Should see a pop, click allow)
 start:
 	go run cmd/main.go

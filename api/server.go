@@ -1,16 +1,15 @@
 package api
 
 import (
-	auth "Microservice-Login/auth"
 	db "Microservice-Login/database/sqlc"
-	"log"
-	"net/http"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
 // Serves http request
 type Server struct {
+
 	store      *db.Store
 	router     *gin.Engine
 	jwtMaker   *auth.JWTMaker
@@ -31,38 +30,23 @@ type AppConfiguration struct {
 // Creates new http server and setup routing
 func NewServer(store *db.Store) *Server {
 	server := &Server{store: store}
-
 	router := gin.Default()
+
+	config := cors.DefaultConfig()
+	config.AllowOrigins = []string{"http://localhost:3000"}
+	config.AllowHeaders = []string{"Content-Type"}
+	config.AllowMethods = []string{"OPTIONS, POST, GET, PUT, DELETE"}
+	config.AllowCredentials = true
+
+	router.Use(cors.New(config))
 
 	router.POST("/createUser", server.createUser)
 	router.POST("/userLogin", server.userLogin)
 	router.POST("/userLogout", server.userLogout)
-	router.POST("/test", server.AuthCookieMiddleware(), server.TestCookie)
-
-	router.GET("/", server.welcome)
-	router.GET("/testAuth", server.AuthenticateUser(), server.TestAuthentication)
-
-	router.GET("/protected_route", server.AuthCookieMiddleware(), func(c *gin.Context) {
-		// This route is protected and can only be accessed by authenticated users
-		// If the middleware function returns an unauthorized error, this function will not be executed
-		c.JSON(http.StatusOK, gin.H{"message": "This is a protected route"})
-	})
+	router.POST("/getUserData", server.getUserDetail)
+	router.POST("/test", server.TestCookie)
 
 	server.router = router
-
-	tokenPath := "./auth/token"
-	jwtMaker, err := auth.NewJWTMaker(tokenPath)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	jwtVerifier, err := auth.NewJWTVerifier(tokenPath)
-	if err != nil {
-		log.Fatal(err)
-	}
-	server.jwtMaker = jwtMaker
-	server.jwtVerfier = jwtVerifier
-
 	return server
 }
 

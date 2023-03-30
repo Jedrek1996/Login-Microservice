@@ -7,14 +7,11 @@ import (
 	"html/template"
 	"log"
 	"net/http"
-	"os"
-	"strconv"
 
 	api "Microservice-Login/api"
 	db "Microservice-Login/database/sqlc"
 	util "Microservice-Login/util"
 
-	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
 )
 
@@ -24,21 +21,12 @@ var newDB *sql.DB
 
 const (
 	dbDriver      = "postgres"
-	serverAddress = ":8080"
+	dbSource      = "postgresql://root:secret@localhost:5430/loginMicroservice9?sslmode=disable"
+	serverAddress = "0.0.0.0:8080"
 )
 
-func main() {
-
+func init() {
 	tpl = template.Must(template.ParseGlob("./templates/testTemplates/*"))
-
-	appCon := getConfig()
-
-	dbSource := ""
-	if appCon.RunOnHost {
-		dbSource = "postgresql://root:secret@localhost:5430/loginMicroservice9?sslmode=disable"
-	} else {
-		dbSource = "postgresql://root:secret@postgres12:5432/loginMicroservice9?sslmode=disable"
-	}
 
 	var err error
 	newDB, err = sql.Open(dbDriver, dbSource)
@@ -50,15 +38,22 @@ func main() {
 	store := db.NewStore(newDB)
 	server := api.NewServer(store)
 
-	server.AppCon = appCon
 	err = server.Start(serverAddress)
 	if err != nil {
-		fmt.Println("hit here")
 		log.Fatal("Error connecting to server:", server)
 	}
 
-	store.Queries = db.New(newDB)
+	db.New(newDB)
 
+	fmt.Println("Database conncted")
+}
+
+func main() {
+
+	// r := gin.Default()
+	// config := cors.DefaultConfig()
+	// config.AllowOrigins = []string{"http://localhost:3000"}
+	// r.Use(cors.New(config))
 	//CSS Files for testing
 	queries = db.New(newDB)
 	fs := http.FileServer(http.Dir("./templates"))
@@ -157,18 +152,4 @@ func signUpTest(res http.ResponseWriter, req *http.Request) {
 			fmt.Println(err, userDetails)
 		}
 	}
-}
-
-// use godot package to load/read the .env file and
-// return the value of the key
-func goDotEnvVariable(key string) string {
-
-	// load .env file which is located at the root path
-	err := godotenv.Load(".env")
-
-	if err != nil {
-		log.Fatalf("Error loading .env file")
-	}
-
-	return os.Getenv(key)
 }

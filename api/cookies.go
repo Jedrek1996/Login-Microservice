@@ -37,9 +37,12 @@ func (s *Server) SetUserCookie(ctx *gin.Context, userDetail db.UserDetail, durat
 	expires := time.Now().Add(duration)
 	cookieID := getUUIDInt32()
 	cookie := http.Cookie{
-		Name:    userDetail.UserName,
-		Value:   strconv.Itoa(int(cookieID)),
-		Expires: expires,
+		Name:     userDetail.UserName,
+		Value:    strconv.Itoa(int(cookieID)),
+		Expires:  expires,
+		Path:     "/",
+		HttpOnly: true,
+		Secure:   false, // set this to true if using HTTPS
 	}
 	http.SetCookie(ctx.Writer, &cookie)
 
@@ -169,23 +172,23 @@ func (s *Server) AuthenticateUser() gin.HandlerFunc {
 			return
 		}
 
-		accessToken := fields[1]
-		payload, err := s.jwtVerfier.GetMetaData(accessToken)
-		if err != nil {
-			ctx.JSON(http.StatusUnauthorized, gin.H{"error": err.Error()})
-			ctx.Abort()
-			return
-		}
+		// accessToken := fields[1]
+		// payload, err := s.jwtVerfier.GetMetaData(accessToken)
+		// if err != nil {
+		// 	ctx.JSON(http.StatusUnauthorized, gin.H{"error": err.Error()})
+		// 	ctx.Abort()
+		// 	return
+		// }
 
 		// add userID to the context of the request
-		ctx.Set("userID", payload.UserID)
+		// ctx.Set("userID", payload.UserID)
 		ctx.Next()
 	}
 }
 
 // Used for testing if cookies exist if not redirect.
 func (server *Server) TestCookie(ctx *gin.Context) {
-	var userReq UserLogoutRequest
+	var userReq UserUserNameRequest
 	if err := ctx.ShouldBindJSON(&userReq); err != nil {
 		ctx.JSON(http.StatusBadRequest, ErrorResponse(err))
 		return
